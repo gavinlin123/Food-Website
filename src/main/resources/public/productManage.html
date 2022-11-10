@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+         $.ajax({
+            url: "session/checklogin",
+            type: "post",
+            async: false,
+            // data: null,
+            // processData: false, // 告诉jQuery不要去处理发送的数据
+            // contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+            // dataType: 'text',
+            success: function (data) {
+                console.log("有成功")
+                console.log(data)
+                if (data == "false") {
+                        location.href = "./login.html"
+                    }
+            },
+            error: function (data) {
+                console.log("失敗")
+
+            }
+        });
+    </script>
+    登入後頁面
+
+    <button id="logout">登出</button><br>
+    <button id="aa">查詢</button>
+    <button id="bb">新增</button>
+    <button id="cc">刪除</button>
+    <button id="dd">修改</button><br>
+    
+    <label for="lname">商品編號:</label>
+    <input type="text" id="item_id" name="item_id" value=""><br>
+    <label for="lname">標題:</label>
+    <input type="text" id="item" name="item" value=""><br>
+    <label for="lname">照片:</label>
+        <div>
+        	<input class="setpic" type="file">
+    	</div>
+    	<div id="picpath"></div>
+    <label for="lname">商品介紹:</label>
+    <input type="text" id="description" name="description" value=""><br>
+    <label for="lname">促銷日期:</label>
+    <input type="text" id="discount_date" name="discount_date" value=""><br>
+    
+    <div id="printout"></div>
+
+
+
+    <script>
+
+        $("#logout").click(function () {
+            $.ajax({
+                url: "session/logout",
+                type: "post",
+                // data: null,
+                // processData: false, // 告诉jQuery不要去处理发送的数据
+                // contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                // dataType: 'text',
+                success: function (data) {
+                    console.log("有成功")
+                    console.log(data)
+                    if (data == "true") {
+                        location.href = "./index.html"
+                    }
+                },
+                error: function (data) {
+                    console.log("失敗")
+
+                }
+            });
+        })
+        
+        $('#aa').click(function () {
+
+            $.ajax({
+                method: "POST",
+                url: "item/memberread",
+            })
+
+                .done(function (msg) {
+                    console.log(msg);
+                    msg.forEach(element => {
+                        $('#printout').append(
+                        	'<div>' + '商品編號: ' + element['item_id'] + '</div>' +
+                            '<div>' + '標題: ' + element['item'] + '</div>' +
+                            '<div>' + '照片: ' + element['pic'] + '</div>' +
+                            '<div>' + '商品介紹: ' + element['description'] + '</div>' +
+                            '<div>' + '促銷日期: ' + element['discount_date'] + '</div>')
+                    });
+                })
+        })
+        
+        $('#bb').click(function () {
+            var formData = new FormData();
+            formData.append("item", $("#item").val());
+            if($(".setpic")[0].files[0] != null){
+            	formData.append("pic", $(".setpic")[0].files[0]);
+            }
+            formData.append("description", $("#description").val());
+            formData.append("discount_date", $("#discount_date"));
+            $.ajax({
+                url: "item/create",
+                type: "post",
+                data: formData,
+                processData: false, // 告诉jQuery不要去处理发送的数据
+                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                dataType: 'text',
+                success: function (data) {
+                	
+                	console.log(data)
+                	alert(data);
+                },
+                
+                error: function (data) {
+                }
+            });    
+        })
+
+        $('#cc').click(function () {
+        	
+            $.ajax({
+                method: "POST",
+                url: "item/delete",
+                dataType: 'text',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({
+                	item_id: $('input[name = "item_id"]').val(),
+                }),
+
+                error: function () {
+                    alert(data);
+                },
+
+                success: function (data) {
+                	
+                	console.log(data)
+                    alert(data);
+                }
+            })
+        })
+
+
+        $('#dd').click(function () {
+            var formData = new FormData();
+            formData.append("item_id", $("#item_id").val());
+            formData.append("item", $("#item").val());
+            if($(".setpic")[0].files[0] != null){
+            	formData.append("pic", $(".setpic")[0].files[0]);
+            }
+            formData.append("description", $("#description").val());
+            formData.append("discount_date", $("#discount_date"));
+            $.ajax({
+                url: "item/update",
+                type: "post",
+                data: formData,
+                processData: false, // 告诉jQuery不要去处理发送的数据
+                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                dataType: 'text',
+                success: function (data) {
+                	
+                	console.log(data)
+                	alert(data);
+                },
+                
+                error: function (data) {
+                }
+            });    
+        })
+
+    </script>
+</body>
+
+</html>

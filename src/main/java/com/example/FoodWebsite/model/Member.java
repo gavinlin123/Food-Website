@@ -19,22 +19,22 @@ public class Member {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "USER_NAME", nullable = true,unique = true)
+	@Column(name = "USER_NAME", nullable = false,unique = true)
 	private String userName;
 	
-	@Column(name = "PASSWORD", nullable = true,unique = false)
+	@Column(name = "PASSWORD", nullable = false,unique = false)
 	private String password;
 	
-	@Column(name = "EMAIL", nullable = true,unique = true)
+	@Column(name = "EMAIL", nullable = false,unique = true)
 	private String email;
 	
-	@Column(name = "SHOP_NAME", nullable = true,unique = false)
+	@Column(name = "SHOP_NAME", nullable = false,unique = false)
 	private String shopName;
 	
-	@Column(name = "TEL", nullable = true,unique = false)
+	@Column(name = "TEL", nullable = false,unique = false)
 	private String tel;
 	
-	@Column(name = "ADDR", nullable = true,unique = false)
+	@Column(name = "ADDR", nullable = false,unique = false)
 	private String addr;
 	
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

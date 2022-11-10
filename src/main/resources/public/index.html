@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Document</title>
+</head>
+
+
+<body>
+
+    <button id="select">查詢</button>
+    <button id="create">新增</button>
+    <button id="delete">刪除</button>
+    <button id="update">修改</button>
+    <button id="login">登入</button><br>
+    
+    <label for="lname">帳號:</label>
+    <input type="text" id="user_name" name="user_name" value=""><br>
+    <label for="lname">密碼:</label>
+    <input type="text" id="password" name="password" value=""><br>
+    <label for="lname">信箱:</label>
+    <input type="text" id="email" name="email" value=""><br>
+    <label for="lname">商店名稱:</label>
+    <input type="text" id="shop_name" name="shop_name" value=""><br>
+    <label for="lname">電話:</label>
+    <input type="text" id="tel" name="tel" value=""><br>
+    <label for="lname">地址:</label>
+    <input type="text" id="addr" name="addr" value=""><br>
+
+    <div id="printout"></div>
+
+
+    <div style="margin-top: 40px;">
+        <a href="./login.html">login 測試</a>
+        <a href="./productManage.html">登入後頁面</a>
+        </div>
+
+
+
+    <script>
+        $('#select').click(function () {
+
+            $.ajax({
+                method: "POST",
+                url: "login/r",
+            })
+
+                .done(function (msg) {
+                    console.log(msg);
+                    msg.forEach(element => {
+                        $('#printout').append(
+                            '<div>' + '帳號代碼: ' + element['member_id'] + '</div>' +
+                            '<div>' + '帳號: ' + element['user_name'] + '</div>' +
+                            '<div>' + '密碼: ' + element['password'] + '</div>' +
+                            '<div>' + '信箱: ' + element['email'] + '</div>' +
+                            '<div>' + '商店名稱: ' + element['shop_name'] + '</div>' +
+                            '<div>' + '電話: ' + element['tel'] + '</div>' +
+                            '<div>' + '地址: ' + element['addr'] + '</div>')
+                    });
+                })
+
+        })
+
+        $('#create').click(function () {
+
+            $.ajax({
+                method: "POST",
+                url: "member/signup",
+                // dataType: "JSON",
+                contentType: 'application/json;charset=utf-8',
+                
+                data: JSON.stringify({
+                    userName: $('input[name = "user_name"]').val(),
+                    password: $('input[name = "password"]').val(),
+                    email: $('input[name = "email"]').val(),
+                    shopName: $('input[name = "shop_name"]').val(),
+                    tel: $('input[name = "tel"]').val(),
+                    addr: $('input[name = "addr"]').val(),
+                }),
+
+
+
+                error: function () {
+
+                    //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    alert("失敗");
+
+                },
+
+                //傳送成功則跳出成功訊息
+
+                success: function () {
+
+                    //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    alert("成功");
+
+                }
+            })
+        })
+
+        $('#delete').click(function () {
+
+            $.ajax({
+                method: "POST",
+                url: "login/d",
+                dataType: "JSON",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({
+                    member_id: $('input[name = "member_id"]').val(),
+                }),
+
+                error: function () {
+
+                    //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    alert("失敗");
+
+                },
+
+                //傳送成功則跳出成功訊息
+
+                success: function () {
+
+                    //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    alert("成功");
+
+                }
+            })
+        })
+
+
+        $('#update').click(function () {
+
+            $.ajax({
+                method: "POST",
+                url: "login/u",
+                dataType: "JSON",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({
+                    member_id: $('input[name = "member_id"]').val(),
+                    user_name: $('input[name = "user_name"]').val(),
+                    password: $('input[name = "password"]').val(),
+                    email: $('input[name = "email"]').val(),
+                    shop_name: $('input[name = "shop_name"]').val(),
+                    tel: $('input[name = "tel"]').val(),
+                    addr: $('input[name = "addr"]').val(),
+                }),
+
+                error: function () {
+
+                    //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    alert("失敗");
+
+                },
+
+                //傳送成功則跳出成功訊息
+
+                success: function () {
+
+                    //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    alert("成功");
+
+                }
+            })
+        })
+
+
+        $('#login').click(function () {
+
+            $.ajax({
+                method: "POST",
+                url: "login/login",
+                dataType: "JSON",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({
+                    user_name: $('input[name = "user_name"]').val(),
+                    password: $('input[name = "password"]').val(),
+                }),
+
+                error: function () {
+
+                    //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    alert("失敗");
+
+                },
+
+                //傳送成功則跳出成功訊息
+
+                success: function (data) {
+                    console.log("成功訊息", data)
+                    //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+                    
+                    if(data == true){
+                      //  location.href = "./productManage.html"
+                        alert("成功登入");
+                        }else{
+                            alert("帳號或密碼錯誤")
+                        }
+
+                }
+            })
+        })
+
+        function messageGo() {
+
+            //取得 "username" 欄位值
+
+            var username = $('#username').val();
+
+            //取得 "message" 欄位值                                
+
+            var message = $('#message').val();
+
+            $.ajax({
+
+                //告訴程式表單要傳送到哪裡                                         
+
+                url: "message.php",
+
+                //需要傳送的資料
+
+                data: "&message=" + message + "&username=" + username,
+
+                //使用POST方法     
+
+                type: "POST",
+
+                //接收回傳資料的格式，在這個例子中，只要是接收true就可以了
+                dataType: 'json',
+
+                //傳送失敗則跳出失敗訊息      
+
+                error: function () {
+
+                    //資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+
+                    alert("失敗");
+
+                },
+
+                //傳送成功則跳出成功訊息
+
+                success: function () {
+
+                    //資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+
+                    alert("成功");
+
+                }
+
+            });
+
+        };
+
+
+    </script>
+</body>
+
+</html>
